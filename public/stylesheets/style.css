@@ -5,3 +5,17 @@ body {
 a {
   color: #00b7ff;
 }
+
+.view {
+    background: url(/images/handshake-blur.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.jumbotron {
+    background: #5CB8FF;
+    color: #FFF;
+    border-radius: 0px;
+}

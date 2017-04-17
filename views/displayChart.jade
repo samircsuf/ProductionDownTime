@@ -1,0 +1,12 @@
+extends layout
+html
+  head
+    script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.js")
+    link(href="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.css")
+    
+block content
+  h1= Bar Chart
+  div Downtime Chart #{mychart}
+
+script(src="../public/javascripts/main.js")

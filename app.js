@@ -6,8 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var stylus = require('stylus');
 
+//route variables
 var index = require('./routes/index');
-var users = require('./routes/users');
+//var users = require('./routes/users');
+var db = require('./routes/dbConnector');
 
 var app = express();
 
@@ -21,11 +23,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(stylus.middleware(path.join(__dirname, 'public')));
+//app.use(stylus.middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/', index);//for requests to intial url, goto routes/index.js
+//app.use('/users', users);//for requests to /user url, goto routes/users.js
+
+//app.use();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

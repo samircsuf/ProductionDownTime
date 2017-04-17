@@ -1,5 +1,36 @@
 extends layout
+html
+  head
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1.text-center.login-title
+  h1 Welcome to #{title}
+  br
+
+  h3 Choose options to Draw a Chart
+  
+  form(action='/displayChart', method='GET')
+    div.form-group
+      select(name='Select X-axis') X-axis:
+        option(value='prodLine') Production Line
+        option(value='dtCode') Downtime Code
+        option(value='shift') Shift
+        option(value='date') DateTime
+        option(value='date') Product Id
+    div.form-group
+        select(name='Select Y-axis') Y-axis:
+          option(value='duration') Duration
+    div.form-group
+        select(name='shift') Shift:
+          option(value='1') 1
+          option(value='2') 2
+          option(value='3') 3
+    div.form-group
+      input(type='date', name='date')
+    br
+    br
+    br
+    button(type='submit') Submit
+    #message
+        if message
+          h1 #{message}
