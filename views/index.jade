@@ -1,36 +1,106 @@
 extends layout
-html
-  head
 
 block content
-  h1.text-center.login-title
-  h1 Welcome to #{title}
-  br
-
-  h3 Choose options to Draw a Chart
+  #outer
+    h1.text-center.login-title
+    h1(style='text-shadow:#fff 0px 1px 0, #000 0 -2.5px 0;line-height:3em; font-family: Serif; font-size:3em; font-weight:bold; color:#6f706c;}') Welcome to #{title}
+    br
+    h4(style='text-shadow:#fff 0px 1px 0, #000 0 -1px 0;line-height:2em; font-family: Serif; font-size:1.5em; font-weight:bold; color:#6f706c;}') Choose options to Draw a Chart
   
-  form(action='/displayChart', method='GET')
-    div.form-group
-      select(name='Select X-axis') X-axis:
-        option(value='prodLine') Production Line
-        option(value='dtCode') Downtime Code
-        option(value='shift') Shift
-        option(value='date') DateTime
-        option(value='date') Product Id
-    div.form-group
-        select(name='Select Y-axis') Y-axis:
-          option(value='duration') Duration
-    div.form-group
-        select(name='shift') Shift:
-          option(value='1') 1
-          option(value='2') 2
-          option(value='3') 3
-    div.form-group
-      input(type='date', name='date')
-    br
-    br
-    br
-    button(type='submit') Submit
-    #message
-        if message
-          h1 #{message}
+    form(action='/displayChart', method='GET')
+      div.form-group(name= 'x-axis', style='font-weight:bold') X-axis:  
+        select(name='listX')
+          option(value='prodLine') Production Line
+          option(value='pid') Product Id
+          option(value='op') Operator
+          option(value='tech') Technician
+          option(value='dtCode') Downtime Code
+          option(value='dtCategory') Downtime Category
+          option(value='shift') Shift
+          option(value='date') Date
+      br
+      div.form-group(name= 'y-axis', style='font-weight:bold') Y-axis:  
+          select(name='listY')
+            option(value='Duration') Duration
+      br
+      div.form-group(name= 'shift', style='font-weight:bold') Shift: 
+          &nbsp&nbsp
+          select(name='selectShift')
+            option(value='All') All
+            option(value='First') First
+            option(value='Second') Second
+            option(value='Third') Third
+      div.form-group(name= 'DownTimeCategory', style='font-weight:bold') Down Time Category: 
+          &nbsp&nbsp
+          select(name='selectDtCategory')
+            option(value='All') All
+            option(value='Planned') Planned
+            option(value='Maintenance') Maintenance
+            option(value='Waiting') Waiting
+            option(value='Quality') Quality
+            option(value='Other') Other
+      div.form-group(name= 'DownTimeCode', style='font-weight:bold') Down Time Code: 
+          &nbsp&nbsp
+          select(name='selectDtCode')
+            option(value='All') All
+            option(value='PM') PM
+            option(value='B') B
+            option(value='L') L
+            option(value='C') C
+            option(value='T') T
+            option(value='MF') MF
+            option(value='MC') MC
+            option(value='MBL') MBL
+            option(value='MCT') MCT
+            option(value='MCN') MCN
+            option(value='WBP') WBP
+            option(value='WEB') WEB
+            option(value='WC') WC
+            option(value='WL') WL
+            option(value='WSL') WSL
+            option(value='BC') BC
+            option(value='CLB') CLB
+            option(value='PQL') PQL
+            option(value='PWI') PWI
+            option(value='FUW') FUW
+            option(value='O') O
+      br
+      div.form-group(name='selectFromDate', style='font-weight:bold') From: 
+        input(type='text', id= 'txtToDate', name='selectFromDate')
+      br
+      div.form-group(name='selectToDate', style='font-weight:bold') To: &nbsp&nbsp&nbsp&nbsp&nbsp
+        input(type='text', id= 'txtFromDate', name='selectToDate') 
+      br
+      div.form-group
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+      button(type='submit') Submit
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+      
+      button(type='reset') Reset
+      #message
+          if message
+            h1 #{message}
+  script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+  script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')
+  link(rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css')
+  script.
+    $(function () {
+      $('#txtFromDate').datepicker({
+        numberOfMonths: 2,
+        dateFormat: 'yy-mm-dd',
+        onSelect: function(selected) {
+          var dt = new Date(selected);
+          dt.setDate(dt.getDate() + 1);
+          $('#txtToDate').datepicker('option','maxDate', dt);
+        }
+      });
+      $('#txtToDate').datepicker({
+        numberOfMonths: 2,
+        dateFormat: 'yy-mm-dd',
+        onSelect: function(selected) {
+          var dt = new Date(selected);
+          dt.setDate(dt.getDate() - 1);
+          $('#txtFromDate').datepicker('option','minDate', dt);
+        }
+      });
+    });

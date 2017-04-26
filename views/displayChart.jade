@@ -1,12 +1,174 @@
-extends layout
+//extends layout
+doctype html(lang='en')
 html
   head
-    script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.js")
-    link(href="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.css")
-    
-block content
-  h1= Bar Chart
-  div Downtime Chart #{mychart}
+    title Home Page
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css')
+    link(rel='stylesheet', href='/stylesheets/style1.css')
+    script(type='text/javascript' src='http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js')
+    link(href='http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css')
+    link(href='http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css' rel='stylesheet' type='text/css')
+  body
+    block content
+    script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js')
+    script(type='text/javascript' src='../javascripts/jquery.jqplot.js')
+    script(type='text/javascript' src='../javascripts/plugins/jqplot.barRenderer.js')
+    script(type='text/javascript' src='../javascripts/plugins/jqplot.pieRenderer.js')
+    script(type='text/javascript' src='../javascripts/plugins/jqplot.categoryAxisRenderer.js')
+    script(type='text/javascript' src='../javascripts/plugins/jqplot.pointLabels.js')
+    link(rel='stylesheet' type='text/css' href='../javascripts/jquery.jqplot.css')
 
-script(src="../public/javascripts/main.js")
+    h1(style='text-align:center;') Downtime Chart - #{x}  vs.  #{y} for #{shift} Shift
+    //#pl #{myChart1}
+    //#dt #{myChart2}
+    //div(id='mychart') #{mychart}
+    #mychart(style='left:2%; height:600px;	width:1800px;')
+    //#mychart(style='left:2%; height:100%;	width:100%;')
+    
+    script.
+      var $ = window.jQuery;
+      var chartData = !{JSON.stringify(dbdata)};
+      var pivot = !{JSON.stringify(dbdata1)};
+      //var pivot1 = JSON.stringify(pivot);
+      
+      console.log('chartData',chartData);
+      console.log('pivot',pivot);
+      
+      $(document).ready(function(){
+        var xLine = [], yLine = [];
+        var rowLen = chartData.length;
+        console.log('rowLen', rowLen);
+        if (pivot === 'PRODUCTION_LINE'){
+          for(var i = 0; i < rowLen; i++) {
+            xLine[i] = chartData[i].PRODUCTION_LINE;
+            yLine[i] = chartData[i].TOTAL_DURATION;
+          }
+        }
+        else if (pivot === 'PRODUCT_ID'){
+          for(var i = 0; i < rowLen; i++) {
+            xLine[i] = chartData[i].PRODUCT_ID;
+            yLine[i] = chartData[i].TOTAL_DURATION;
+          }
+        }
+        else if (pivot === 'OPERATOR_NAME'){
+          for(var i = 0; i < rowLen; i++) {
+            xLine[i] = chartData[i].OPERATOR_NAME;
+            yLine[i] = chartData[i].TOTAL_DURATION;
+          }
+        }
+        else if (pivot === 'TECHNICIAN_NAME'){
+          for(var i = 0; i < rowLen; i++) {
+            xLine[i] = chartData[i].TECHNICIAN_NAME;
+            yLine[i] = chartData[i].TOTAL_DURATION;
+          }
+        }
+        else if (pivot === 'DOWNTIME_CODE'){
+          for(var i = 0; i < rowLen; i++) {
+            xLine[i] = chartData[i].DOWNTIME_CODE;
+            yLine[i] = chartData[i].TOTAL_DURATION;
+          }
+        }
+        else if (pivot === 'DOWNTIME_CATEGORY'){
+          for(var i = 0; i < rowLen; i++) {
+            xLine[i] = chartData[i].DOWNTIME_CATEGORY;
+            yLine[i] = chartData[i].TOTAL_DURATION;
+          }
+        }
+        else if (pivot === 'SHIFT'){
+          for(var i = 0; i < rowLen; i++) {
+            xLine[i] = chartData[i].SHIFT;
+            yLine[i] = chartData[i].TOTAL_DURATION;
+          }
+        }
+        else if (pivot === 'DATE_VAL'){
+          for(var i = 0; i < rowLen; i++) {
+            xLine[i] = chartData[i].DATE_VAL;
+            yLine[i] = chartData[i].TOTAL_DURATION;
+          }
+        }
+        else {
+          for(var i = 0; i < rowLen; i++) {
+            xLine[i] = chartData[i].PRODUCTION_LINE;
+            yLine[i] = chartData[i].TOTAL_DURATION;
+          }
+        }
+        console.log('xLine',xLine);
+        console.log('yLine',yLine);
+        
+        var values = '[';
+        //var arrX = new Array(3, 7, 12, 15, 21, 8, 2);
+        //var arrY = new Array(7, 11, 2, 8, 15, 2, 9);
+        for(var i = 0; i < xLine.length; i++){
+          if (i=== xLine.length - 1)
+            values += '[' + xLine[i] + ',' + yLine[i] +']';
+          else
+            values += '[' + xLine[i] + ',' + yLine[i] +'],';
+        }
+        values += ']';
+        console.log('values', values);
+        
+        $.jqplot.config.enablePlugins = true;
+        var options = {
+          //animate: !$.jqplot.use_excanvas,
+          seriesDefaults:{
+            renderer:$.jqplot.BarRenderer,
+            pointLabels: { show: true },
+            rendererOptions: {fillToZero: true}
+          },
+          series:[xLine],
+          legend: {
+            show: true,
+            placement: 'outsideGrid'
+          },
+          axes: {
+              xaxis: {
+                renderer: $.jqplot.CategoryAxisRenderer,
+                ticks: xLine
+              }
+          },
+          highlighter: {
+            show: false,
+          }
+        };
+        var plot1 = $.jqplot ('mychart', [yLine], options);
+        var data = null;
+        $('#mychart').bind('jqplotDataClick', function (ev, seriesIndex, pointIndex, data) {
+          $('#info1').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
+        });
+      });
+      
+    .footer
+      .container
+        .row
+          .col-sm-5
+            p(style='font-weight:bold;font-size:15px;') Drawing Charts is fun! 
+            p
+              | Project   -  CPSC 531 
+              br
+              | PS. Final project - Advanced Database Management!!!
+          .col-sm-5
+            p.text-info.text-right
+              br
+              br
+            .row
+              .col-md-12.hidden-lg.hidden-md.hidden-sm.text-left
+                a(href='#')
+                  i.fa.fa-3x.fa-fw.fa-instagram.text-inverse
+                a(href='#')
+                  i.fa.fa-3x.fa-fw.fa-twitter.text-inverse
+                a(href='#')
+                  i.fa.fa-3x.fa-fw.fa-facebook.text-inverse
+                a(href='#')
+                  i.fa.fa-3x.fa-fw.fa-github.text-inverse
+            .row
+              .col-md-12.hidden-xs.text-right
+                a(href='#')
+                  i.fa.fa-3x.fa-fw.fa-instagram.text-inverse
+                a(href='#')
+                  i.fa.fa-3x.fa-fw.fa-twitter.text-inverse
+                a(href='#')
+                  i.fa.fa-3x.fa-fw.fa-facebook.text-inverse
+                a(href='#')
+                  i.fa.fa-3x.fa-fw.fa-github.text-inverse

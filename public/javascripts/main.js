@@ -1,3 +1,4 @@
+//no. of downtime and average downtime charts
 var $ = window.jQuery;
 $(document).ready(function(result, status){
         $.jqplot.config.enablePlugins = true;

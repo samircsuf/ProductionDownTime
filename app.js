@@ -7,9 +7,11 @@ var bodyParser = require('body-parser');
 var stylus = require('stylus');
 
 //route variables
-var index = require('./routes/index');
+var index = require('./routes/index')();
 //var users = require('./routes/users');
-var db = require('./routes/dbConnector');
+
+
+//var db = require('./routes/dbConnector');
 
 var app = express();
 

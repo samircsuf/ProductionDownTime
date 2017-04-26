@@ -1,13 +1,21 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: '20%';
+  font-family: Serif;
+  font-size: 14px;
+  font-style: normal;
+  background: url('../images/473025801.jpg');
+  background-size: cover;
 }
+
 a {
   color: #00b7ff;
 }
 
 .view {
-    background: url(/images/handshake-blur.jpg) no-repeat center center fixed;
+    background: url('../images/graph_01.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -18,4 +26,15 @@ a {
     background: #5CB8FF;
     color: #FFF;
     border-radius: 0px;
+}
+
+.footer {
+  display: flex;
+  align-items: flex-start;
+  position: absolute;
+  padding: 1rem;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(102, 204, 255);
 }
