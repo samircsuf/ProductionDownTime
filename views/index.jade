@@ -3,10 +3,9 @@ extends layout
 block content
   #outer
     h1.text-center.login-title
-    h1(style='text-shadow:#fff 0px 1px 0, #000 0 -2.5px 0;line-height:3em; font-family: Serif; font-size:3em; font-weight:bold; color:#6f706c;}') Welcome to #{title}
-    br
-    h4(style='text-shadow:#fff 0px 1px 0, #000 0 -1px 0;line-height:2em; font-family: Serif; font-size:1.5em; font-weight:bold; color:#6f706c;}') Choose options to Draw a Chart
-  
+    h1(style='text-shadow:#fff 0px 1px 0, #000 0 -2.5px 0;line-height:3em; font-family: Serif; font-size:3em; font-weight:bold; color:#6f706c;') Welcome to #{title}
+    h4(style='text-shadow:#fff 0px 1px 0, #000 0 -1px 0;line-height:2em; font-family: Serif; font-size:1.5em; font-weight:bold; color:#6f706c;') Choose options to Draw a Chart
+    
     form(action='/displayChart', method='GET')
       div.form-group(name= 'x-axis', style='font-weight:bold') X-axis:  
         select(name='listX')
@@ -18,11 +17,9 @@ block content
           option(value='dtCategory') Downtime Category
           option(value='shift') Shift
           option(value='date') Date
-      br
       div.form-group(name= 'y-axis', style='font-weight:bold') Y-axis:  
           select(name='listY')
             option(value='Duration') Duration
-      br
       div.form-group(name= 'shift', style='font-weight:bold') Shift: 
           &nbsp&nbsp
           select(name='selectShift')
@@ -30,6 +27,12 @@ block content
             option(value='First') First
             option(value='Second') Second
             option(value='Third') Third
+      div.form-group(name= 'Production Line', style='font-weight:bold') Production Line:  
+          input(type='text', name='pdLine', placeholder='# 101  - # 120')
+
+      div.form-group(name= 'Product ID', style='font-weight:bold') Product ID:  
+          input(type='text', name='pdId', placeholder='# 1500  - # 1529')
+
       div.form-group(name= 'DownTimeCategory', style='font-weight:bold') Down Time Category: 
           &nbsp&nbsp
           select(name='selectDtCategory')
@@ -43,28 +46,27 @@ block content
           &nbsp&nbsp
           select(name='selectDtCode')
             option(value='All') All
-            option(value='PM') PM
-            option(value='B') B
-            option(value='L') L
-            option(value='C') C
-            option(value='T') T
-            option(value='MF') MF
-            option(value='MC') MC
-            option(value='MBL') MBL
-            option(value='MCT') MCT
-            option(value='MCN') MCN
-            option(value='WBP') WBP
-            option(value='WEB') WEB
-            option(value='WC') WC
-            option(value='WL') WL
-            option(value='WSL') WSL
-            option(value='BC') BC
-            option(value='CLB') CLB
-            option(value='PQL') PQL
-            option(value='PWI') PWI
-            option(value='FUW') FUW
-            option(value='O') O
-      br
+            option(value='PM') P-PM
+            option(value='B') P-B
+            option(value='L') P-L
+            option(value='C') P-C
+            option(value='T') P-T
+            option(value='MF') M-MF
+            option(value='MC') M-MC
+            option(value='MBL') M-MBL
+            option(value='MCT') M-MCT
+            option(value='MCN') M-MCN
+            option(value='WBP') W-WBP
+            option(value='WEB') W-WEB
+            option(value='WC') W-WC
+            option(value='WL') W-WL
+            option(value='WSL') W-WSL
+            option(value='BC') Q-BC
+            option(value='CLB') Q-CLB
+            option(value='PQL') Q-PQL
+            option(value='PWI') Q-PWI
+            option(value='FUW') Q-FUW
+            option(value='O') Other
       div.form-group(name='selectFromDate', style='font-weight:bold') From: 
         input(type='text', id= 'txtToDate', name='selectFromDate')
       br
