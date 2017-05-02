@@ -1,7 +1,18 @@
+/*
 .footer {
   display: flex;
   align-items: flex-start;
   position: absolute;
+  padding: 1rem;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(102, 204, 255);
+}
+*/
+.footer {
+  position: absolute;
+  align-items: flex-start;
   padding: 1rem;
   right: 0;
   bottom: 0;

@@ -7,27 +7,31 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css')
     link(rel='stylesheet', href='/stylesheets/style1.css')
+    script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js')
     script(type='text/javascript' src='http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js')
     link(href='http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css')
     link(href='http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css' rel='stylesheet' type='text/css')
   body
     block content
-    script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js')
     script(type='text/javascript' src='../javascripts/jquery.jqplot.js')
     script(type='text/javascript' src='../javascripts/plugins/jqplot.barRenderer.js')
     script(type='text/javascript' src='../javascripts/plugins/jqplot.pieRenderer.js')
     script(type='text/javascript' src='../javascripts/plugins/jqplot.categoryAxisRenderer.js')
     script(type='text/javascript' src='../javascripts/plugins/jqplot.pointLabels.js')
+    script(type='text/javascript' src='../javascripts/plugins/jqplot.canvasAxisLabelRenderer.js')
+    script(type='text/javascript' src='../javascripts/plugins/jqplot.canvasTextRenderer.js')
+    script(type='text/javascript' src='../javascripts/plugins/jqplot.enhancedLegendRenderer.js')
     link(rel='stylesheet' type='text/css' href='../javascripts/jquery.jqplot.css')
 
     h2(style='text-align:center;font-family: Serif; font-size:2.5em; font-weight:bold; color:#603a33;') Downtime Chart - #{x}  vs.  #{y} 
-    h3(style='text-align:center;font-family: Serif; font-size:2em; font-weight:bold; color:#603a33;') Filtered By- Shift: #{shift}, Production Line: #{prodLine}, Down Time Category: #{dtCategory}, Down Time Code: #{dtCode}
+    h3(style='text-align:center;font-family: Serif; font-size:1.5em; font-weight:bold; color:#023382;') Filtered By - Shift: #{shift}, Production Line: #{prodLine}, Down Time Category: #{dtCategory}, Down Time Code: #{dtCode}
     //#pl #{myChart1}
     //#dt #{myChart2}
     //div(id='mychart') #{mychart}
-    #mychart(style='left:2%; height:500px;	width:1600px;')
+    #info1(style='font-weight:bold; text-align: center; font-family: Serif;ont-size:1.5em; color:#4155f4;')    
+    #mychart(style='left:2%; height:550px;	width:1600px;')
+    //#mychart(style='left:2%; height:60%;	width:80%;')
     //#mychart(style='left:2%; height:100%;	width:100%;')
-    
     script.
       var $ = window.jQuery;
       var chartData = !{JSON.stringify(dbdata)};
@@ -113,6 +117,9 @@ html
         $.jqplot.config.enablePlugins = true;
         var options = {
           //animate: !$.jqplot.use_excanvas,
+          axesDefaults: {
+            labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+          },
           seriesDefaults:{
             renderer:$.jqplot.BarRenderer,
             pointLabels: { show: true },
@@ -121,29 +128,41 @@ html
           series:[xLine],
           legend: {
             show: true,
-            placement: 'outsideGrid'
+            showLabels: true,
+            placement: 'outsideGrid',
+            rowSpacing: '0.5em',
           },
           axes: {
               xaxis: {
                 renderer: $.jqplot.CategoryAxisRenderer,
-                ticks: xLine
+                ticks: xLine,
+                label: pivot
+              },
+              yaxis: {
+                label: 'Duration'
               }
           },
           highlighter: {
             show: false,
-          }
+          },
+          series: pivot
         };
         var plot1 = $.jqplot ('mychart', [yLine], options);
-        var data = null;
-        $('#mychart').bind('jqplotDataClick', function (ev, seriesIndex, pointIndex, data) {
-          $('#info1').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
+        //var data = null;
+        $('#mychart').bind('jqplotDataHighlight', function (ev, seriesIndex, pointIndex, data) {
+          console.log('data', data);
+          $('#info1').html('Labels - point: ' +(pointIndex +1)+ ', data: ' +data[1]);
+        });
+        $('#mychart').bind('jqplotDataUnhighlight', 
+            function (ev) {
+                $('#info1').html('');
         });
       });
-      
+
     .footer
       .container
         .row
-          .col-sm-5
+          .col-sm-6
             p(style='font-weight:bold;font-size:15px;') Drawing Charts is fun! 
             p
               | Project   -  CPSC 531 

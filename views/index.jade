@@ -9,14 +9,14 @@ block content
     form(action='/displayChart', method='GET')
       div.form-group(name= 'x-axis', style='font-weight:bold') X-axis:  
         select(name='listX')
+          option(value='dtCategory') Downtime Category
+          option(value='dtCode') Downtime Code
+          option(value='shift') Shift
           option(value='prodLine') Production Line
           option(value='pid') Product Id
           option(value='op') Operator
           option(value='tech') Technician
-          option(value='dtCode') Downtime Code
-          option(value='dtCategory') Downtime Category
-          option(value='shift') Shift
-          option(value='date') Date
+
       div.form-group(name= 'y-axis', style='font-weight:bold') Y-axis:  
           select(name='listY')
             option(value='Duration') Duration

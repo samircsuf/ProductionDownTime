@@ -12,7 +12,7 @@ var jsonArray;
 
 module.exports = function() {
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Down Time Charts' });
+  res.render('index', { title: 'Production Down Time Charts' });
   //next();
 });
 
@@ -111,7 +111,9 @@ router.get('/displayChart', function(req, res){
           throw err;
       }
       else{
+        var queryPre = new Date().getTime();
         connection.query(queryString, function(err, rows) {
+            var queryPost = new Date().getTime();
             connection.release();
             if (!err) {
                 console.log('row:', rows[0]);
@@ -127,6 +129,8 @@ router.get('/displayChart', function(req, res){
                 dtCategory: dtCategory,
                 dtCode: dtCode
             });
+            var duration = (queryPost - queryPre) / 1000;
+            console.log('duration (sec): ', duration);
             console.log('jsonArray', rows[2].TOTAL_DURATION);
         });
       /*if (pdShift === 'All') {
